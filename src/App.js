@@ -228,6 +228,8 @@ class App extends Component {
           <Button
             text='Nova Carta'
             onClick={this.handleNewCard}
+            bg={finalMessage && '#00000026'}
+            blockedCursor={finalMessage}
           />
           <Button
             bg='red'

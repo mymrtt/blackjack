@@ -16,7 +16,7 @@ const Container = styled.button`
   border: none;
   border-bottom: ${(props) => props.borderBottom};
   background: ${(props) => props.bg ? props.bg : '#20bf55'};
-  cursor: pointer;
+  cursor: ${(props) => props.blockedCursor ? 'not-allowed' : 'pointer'};
 
   @media(max-width: 648px) {
     margin: 0;
@@ -36,6 +36,7 @@ const Button = (props) => (
     borderBottom={props.borderBottom}
     fontWeight={props.fontWeight}
     onClick={props.onClick}
+    blockedCursor={props.blockedCursor}
   >
     {props.text}
   </Container>
