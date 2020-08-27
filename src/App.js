@@ -164,10 +164,6 @@ class App extends Component {
 
       let sum = values.reduce((a, b) => {return a + b}, 0);
 
-      this.setState({
-        sum,
-      })
-
       if (sum > 21) {
         this.setState({
           finalMessage: 'Você perdeu :('
