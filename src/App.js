@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import Card from './components/Card';
 import Button from './components/Button';
 
+// Images
+import CasinoBg from './assets/casino-table.jpg';
+import MenuIcon from './assets/menu.svg';
+
 // Styles
 const Container = styled.div`
   width: 100%;
@@ -13,17 +17,35 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background: darkgreen;
+  background-image: url(${CasinoBg});
+  font-family: 'Overpass', Bold;
 `;
 
 const Points = styled.div`
-  @media(max-width: 648px) {
+  img {
     display: none;
+  }
+
+  @media(max-width: 648px) {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+      margin: .5rem;
+      width: 2rem;
+      display: flex;
+    }
   }
 `;
 
 const Title = styled.h1`
   color: #fff;
+  font-weight: 800;
+
+  @media(max-width: 648px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ContainerCards = styled.div`
@@ -57,6 +79,11 @@ const ContainerPointsArrow = styled.div`
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 13px solid #fff;
+
+  @media(max-width: 648px) {
+    top: 3rem;
+    right: 1rem;
+  }
 `;
 
 const WrapperPoints = styled.div`
@@ -71,18 +98,24 @@ const WrapperPoints = styled.div`
   background: #fff;
   border-radius: 10px;
   z-index: 2;
+
+  @media(max-width: 648px) {
+    top: 3.8rem;
+  }
 `;
 
 const TextPoints = styled.p`
   color: #000;
-  font-family: 'Overpass', Bold;
   font-size: 1rem;
+
+  @media(max-width: 648px) {
+    width: max-content;
+  }
 `;
 
 const FinalMessage = styled.p`
   color: #fff;
   font-size: 1.3rem;
-  font-family: 'Overpass', Bold;
 
   @media(max-width: 648px) {
     margin-top: 12rem;
@@ -100,6 +133,7 @@ class App extends Component {
     points: 0,
     finalMessage: undefined,
     isRenderPoints: false,
+    sominha: 0,
   }
 
   componentDidMount() {
@@ -149,7 +183,7 @@ class App extends Component {
 
   // Gerar uma nova carta
   handleNewCard = () => {
-    const { userCards, points } = this.state;
+    const { userCards, points, sominha } = this.state;
 
     let card = this.handleGetCard();
 
@@ -161,22 +195,28 @@ class App extends Component {
 
     if (userCards.length > 0) {
       const values = list.map((card) => card.value);
-
       let sum = values.reduce((a, b) => {return a + b}, 0);
 
-      if (sum > 21) {
+      // Para atrasar sum
+      this.setState({
+        sominha: sum,
+      });
+
+      if (sominha > 21) {
         this.setState({
+          sominha: sominha,
           finalMessage: 'Você perdeu :('
         })
 
         return;
       } 
   
-      if (sum === 21) {
+      if (sominha === 21) {
         this.setState({
           points: points + 1,
-          finalMessage: 'Você ganhou!!! Teste novamente a sua sorte!'
+          finalMessage: 'Você ganhou!!! Jogue novamente!'
         })
+        return;
       }
     }
   }
@@ -184,7 +224,7 @@ class App extends Component {
   handleNewGame = () => {
     this.setState({
       userCards: [], 
-      sum: 0,
+      sominha: 0,
       finalMessage: false,
     });
   }
@@ -203,7 +243,7 @@ class App extends Component {
         <ContainerPointsArrow />
         <WrapperPoints>
           <TextPoints>{points} é a sua pontuação até o momento.</TextPoints>
-          <TextPoints>Continue testando a sua sorte!</TextPoints>
+          <TextPoints>{points > 0 ? 'Continue testando' : 'Teste'} a sua sorte!</TextPoints>
         </WrapperPoints>
       </ContainerPoints>
     )
@@ -257,11 +297,14 @@ class App extends Component {
             height='auto'
             fontWeight='600'
             text='Pontuação +'
+            mobDisplay='none'
             onClick={this.handlePoints}
           />
+          <img src={MenuIcon} alt="menu" onClick={this.handlePoints} />
           {isRenderPoints && this.renderPoints()}
         </Points>
         <Title>Jogue agora 21!</Title>
+        <Title>{this.state.sominha}</Title>
         {this.renderCardGame()}
       </Container>
     );
