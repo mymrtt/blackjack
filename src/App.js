@@ -19,6 +19,11 @@ const Container = styled.div`
   flex-direction: column;
   background-image: url(${CasinoBg});
   font-family: 'Overpass', Bold;
+
+  @media(max-width: 648px) {
+    background-position-x: center;
+    background-position-y: center;
+  }
 `;
 
 const Points = styled.div`
