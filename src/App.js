@@ -309,7 +309,7 @@ class App extends Component {
           {isRenderPoints && this.renderPoints()}
         </Points>
         <Title>Jogue agora 21!</Title>
-        <Title>{this.state.sominha}</Title>
+        {/* <Title>{this.state.sominha}</Title> */}
         {this.renderCardGame()}
       </Container>
     );
